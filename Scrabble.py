@@ -1,5 +1,4 @@
 #Plateau de jeu
-
 def init_bonus():
     bonus=[]
     cases_MT = [[0,0],[0,7],[0,14],[7,0],[7,14],[14,0],[14,7],[14,14]]
@@ -8,6 +7,7 @@ def init_bonus():
     cases_LD = [[0,3],[0,11],[2,6],[2,8],[3,0],[3,7],[3,14],[6,2],[6,6],[6,8],[6,12],[7,3],[7,11],[8,2],[8,6],[8,8],[8,12],[11,0],[11,7],[11,14],[12,6],[12,8],[14,3],[14,11]]
 
         #creer une liste de 15 lignes avec les 15 colognes
+        #le meme programme que pour la fonction init_jetons()
     for i in range(15):
         bonus.append(15*[""])
     print(bonus,"\n")
@@ -33,6 +33,8 @@ def init_bonus():
                 bonus[ligne].insert(colum,"LD")
     return bonus
             
-x=init_bonus()
-print(x)
+plateauBonus=init_bonus()
+print(plateauBonus)
 
+def init():
+    return "WSW·"
