@@ -36,5 +36,4 @@ def init_bonus():
 plateauBonus=init_bonus()
 print(plateauBonus)
 
-def init():
-    return "WSW·"
+
