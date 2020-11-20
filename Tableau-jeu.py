@@ -7,16 +7,42 @@ def init_bonus():
     cases_LD = [[0,3],[0,11],[2,6],[2,8],[3,0],[3,7],[3,14],[6,2],[6,6],[6,8],[6,12],[7,3],[7,11],[8,2],[8,6],[8,8],[8,12],[11,0],[11,7],[11,14],[12,6],[12,8],[14,3],[14,11]]
         #creer une liste de 15 lignes avec les 15 colognes
         
-        #inserer dans la position correspondante les bonus, passer pour toutes les colognes de toutes les lignes
+    #inserer dans la position correspondante les bonus, passer pour toutes les colognes de toutes les lignes
 def init_jetons():
     plateau=[]
     for i in range(15):
         plateau.append(15*[" "])
     return plateau
-        #le meme programme que pour la fonction init_bonus()
+
+    #afficher le jeton dans la position correspondante
+def affichage_jetons(i,j,plateau):
+    lettre=input("Jeton?: ")
+    plateau[i][j]=lettre
+    return plateau
 
 
+
+ 
 plateau=init_jetons()
 for ligne in plateau:
     print(*ligne, sep="|")
-    print(15*"_ ")
+
+plateauJoue=affichage_jetons(4,7,plateau)
+for ligne in plateauJoue:
+    print(*ligne, sep="|")
+
+plateauJoue=affichage_jetons(10,3,plateauJoue)
+for ligne in plateauJoue:
+    print(*ligne, sep="|")
+    
+#Pour ecrire un mot il faudrait creer un boucle pour prendre toujours le dernier tableau comme paramètre
+#Et determiner automatiquement la direction (i+-1 et j+-1) pour ecrire le mot en ordre
+
+#mot=input("Mot a jouer: ").upper()
+    #mot=list(mot)
+    #if (len(mot)>15-j):
+        #return ""
+    #for lettre in mot:
+        #plateau[i][j]=lettre
+        #j+=1
+    #return plateau
