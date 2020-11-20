@@ -6,14 +6,14 @@ cases_LD = [[0,3],[0,11],[2,6],[2,8],[3,0],[3,7],[3,14],[6,2],[6,6],[6,8],[6,12]
 
 
 
-def init_jetons():                              #Fonction de la grille vide
+def init_jetons():                      #Fonction de la grille vide
     plateau=[]
     for i in range(15):
-        plateau.append(15*[" "])
+        plateau.append(15*["  "])
     return plateau
 
 
-def init_bonus2():                              #Fonction des lettre bonus à leur position
+def init_bonus():                    #Fonction des lettre bonus à leur position
     jeton=init_jetons()
     a=0
     b=0
@@ -35,7 +35,7 @@ def init_bonus2():                              #Fonction des lettre bonus à le
 
 
 #Programme principal
-lettre_bonus=init_bonus2()
+lettre_bonus=init_bonus()
 plateau=init_jetons()
 for ligne in lettre_bonus:
     print(*ligne, sep="|")
