@@ -7,7 +7,7 @@ def init_bonus():
     cases_LD = [[0,3],[0,11],[2,6],[2,8],[3,0],[3,7],[3,14],[6,2],[6,6],[6,8],[6,12],[7,3],[7,11],[8,2],[8,6],[8,8],[8,12],[11,0],[11,7],[11,14],[12,6],[12,8],[14,3],[14,11]]
         #creer une liste de 15 lignes avec les 15 colognes
         
-        #inserer dans la position correspondante les bonus, passer pour toutes les positions de toutes les lignes
+        #inserer dans la position correspondante les bonus, passer pour toutes les colognes de toutes les lignes
 def init_jetons():
         #le meme programme que pour la fonction init_bonus()
     
