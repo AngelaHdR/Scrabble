@@ -9,5 +9,14 @@ def init_bonus():
         
         #inserer dans la position correspondante les bonus, passer pour toutes les colognes de toutes les lignes
 def init_jetons():
+    plateau=[]
+    for i in range(15):
+        plateau.append(15*[" "])
+    return plateau
         #le meme programme que pour la fonction init_bonus()
-    
+
+
+plateau=init_jetons()
+for ligne in plateau:
+    print(*ligne, sep="|")
+    print(15*"_ ")
