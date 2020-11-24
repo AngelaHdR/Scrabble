@@ -62,11 +62,14 @@ def completer_main(main,sac):
 
 #changer x jetons de la main par x jetons de la pioche
 def echanger(jetons,main,sac):
-    for i in range(len(jetons)):
-        y=main.index(jetons[i])
-        lt=main.pop(y)
-        sac.append(lt)
-    main=completer_main(main,sac)
+    if(len(sac)>=7):
+        for i in range(len(jetons)):
+            y=main.index(jetons[i])
+            lt=main.pop(y)
+            sac.append(lt)
+        main=completer_main(main,sac)
+    else:
+        print("Il n'y a pas suffisant des jetons dans le sac")
     return main
 
 
@@ -77,9 +80,13 @@ sac=init_pioche(dico)
 main=[]
 mainCom=completer_main(main,sac)
 print(mainCom)
-print(sac)
     #echanger des jetons entre les listes main et sac
-jetons=["t","r","i"]
+jetons=[]
+nb=int(input("Nombre de lettres a echanger: "))
+for i in range (nb):
+    lt=input("Lettre a echanger: ").upper()
+    if (lt in main):
+        jetons.append(lt)
 main=echanger(jetons,mainCom,sac)
 print(main)
 print(sac)
