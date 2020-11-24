@@ -59,6 +59,15 @@ def completer_main(main,sac):
         reste=7-len(main)
         main.extend(piocher(reste,sac))
     return main
+#creer une liste avec les jetons qu'on veut echanger
+def jetons_change():
+    jetons=[]
+    nb=int(input("Nombre de lettres a echanger: "))
+    for i in range (nb):
+        lt=input("Lettre a echanger: ").upper()
+        if (lt in main):
+            jetons.append(lt)
+    return jetons
 
 #changer x jetons de la main par x jetons de la pioche
 def echanger(jetons,main,sac):
@@ -81,13 +90,13 @@ main=[]
 mainCom=completer_main(main,sac)
 print(mainCom)
     #echanger des jetons entre les listes main et sac
-jetons=[]
-nb=int(input("Nombre de lettres a echanger: "))
-for i in range (nb):
-    lt=input("Lettre a echanger: ").upper()
-    if (lt in main):
-        jetons.append(lt)
+jetons=jetons_change()
 main=echanger(jetons,mainCom,sac)
 print(main)
 print(sac)
+
+#Programme principal avec x joueurs
+nbjou=int(input("Nombre de joueurs: "))
+for i in range (nbjou):
+    
 
