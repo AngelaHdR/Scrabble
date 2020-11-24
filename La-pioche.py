@@ -1,5 +1,6 @@
 #La pioche
 from random import*
+
 #creer un dictioner avec le nombre et le valeur de chaque lettre
 def init_dico ():                        
     dico={"A":{"occ":9 , "val":1},
@@ -31,14 +32,13 @@ def init_dico ():
        "?":{"occ":2 , "val":0}}
     return dico
 
-
+#creer une liste avec toutes les lettres 
 def init_pioche(dico):
-    pioche=[]
+    sac=[]
     for lettre in dico :
         for i in range (dico[lettre]["occ"]):
-            
-            pioche.append(lettre)
-    return pioche
+            sac.append(lettre)
+    return sac
 
 #prendre x jetons de la pioche
 def piocher(x,sac):
@@ -70,15 +70,17 @@ def echanger(jetons,main,sac):
     return main
 
 
-#le sac c'est la fonction 2
+    #initialiser le dictioner et creer la liste pour piocher
 dico=init_dico ()
-sac=
-main=["t","r","i"]
+sac=init_pioche(dico)
+    #initialiser et completer la main, modifier les listes main et sac
+main=[]
 mainCom=completer_main(main,sac)
 print(mainCom)
 print(sac)
+    #echanger des jetons entre les listes main et sac
 jetons=["t","r","i"]
-z=echanger(jetons,mainCom,sac)
-print(z)
+main=echanger(jetons,mainCom,sac)
+print(main)
 print(sac)
 
