@@ -59,6 +59,7 @@ def completer_main(main,sac):
         reste=7-len(main)
         main.extend(piocher(reste,sac))
     return main
+
 #creer une liste avec les jetons qu'on veut echanger
 def jetons_change():
     jetons=[]
@@ -98,5 +99,6 @@ print(sac)
 #Programme principal avec x joueurs
 nbjou=int(input("Nombre de joueurs: "))
 for i in range (nbjou):
+    x+i=[]
+print(x+1)
     
-
