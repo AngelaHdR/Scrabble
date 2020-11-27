@@ -9,11 +9,6 @@ def generer_dico(nf):
     fichier.close()
     return dico
 
-#voir si on peut construir un mot avec les lettres disponibles
-def mot_jouable(mot,ll):
-    return True
-    return False
-
 #voir d'une liste de mots lesquels on peut jouer avec les lettres disponibles
 def mots_jouables(motsfr,dico):
     for mot in motsfr:
