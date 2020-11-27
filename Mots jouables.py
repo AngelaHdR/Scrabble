@@ -1,4 +1,4 @@
-def mot_jouable(mot,ll):
+def mot_jouable(mot,ll):           #Vérifie si le mot joué contient les lettre de la main
 
     lettres_restantes = list(ll)
 
@@ -11,7 +11,7 @@ def mot_jouable(mot,ll):
 
 
   
-def mots_jouables(motsfr, ll): 
+def mots_jouables(motsfr, ll):         #Donne la liste de tout les mots français jouables avec la main du joueur
     selection = []
     i = 0
     while i<len(motsfr):
