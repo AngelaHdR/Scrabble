@@ -31,7 +31,7 @@ def init_bonus():
     
 
     #afficher le jeton dans la position choisit
-def affichage_jetons(ligne,cologne,plateau):
+def affichage_jetons(ligne,cologne,plateau,lettre):
     lettre=input("Jeton?: ").upper()
     
     if(plateau[ligne][cologne]=="MT"):
@@ -47,11 +47,7 @@ def affichage_jetons(ligne,cologne,plateau):
     return plateau
 
 
-
- 
-#plateau=init_jetons()
-#for ligne in plateau:
-    #print(*ligne, sep="|")
+#PROGRAMME PRINCIPAL
     
 plateauBonus=init_bonus()
 for ligne in plateauBonus:
@@ -65,11 +61,10 @@ for ligne in plateauJoue:
 #Et determiner automatiquement la direction (i+-1 et j+-1) pour ecrire le mot en ordre
 
 #mot=input("Mot a jouer: ").upper()
-    #mot=list(mot)
     #if (len(mot)>15-j):
         #return "[]"
     #for lettre in mot:
-        #plateau[i][j]=lettre
+        #affichage_jetons(ligne,cologne,panneau,lettre)
         #j+=1 si le mot va en horizontal
         #i+=1 si le mot va en vertical
     #return plateau
