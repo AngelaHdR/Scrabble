@@ -83,20 +83,8 @@ def echanger(jetons,main,sac):
     return main
 
 
-    #initialiser le dictioner et creer la liste pour piocher
-#dico=init_dico ()
-#sac=init_pioche(dico)
-    #initialiser et completer la main, modifier les listes main et sac
-#main=[]
-#mainCom=completer_main(main,sac)
-#print(mainCom)
-    #echanger des jetons entre les listes main et sac
-#jetons=jetons_change()
-#main=echanger(jetons,mainCom,sac)
-#print(main)
-#print(sac)
+#PROGRAMME PRINCIPAL AVEC 2 JOUEURS
 
-#Programme principal avec 2 joueurs
 dico=init_dico ()
 sac=init_pioche(dico)
 j1=[]
@@ -104,6 +92,7 @@ j2=[]
 j1=completer_main(j1,sac)
 j2=completer_main(j2,sac)
 print("La main de j1:",j1,"\nLa main de j2:",j2)
+
 nbparti=int(input("Nombre de partis: "))
 for i in range (nbparti):
     print("Joueur 1")
