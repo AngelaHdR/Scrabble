@@ -74,6 +74,17 @@ def valeur_mot(mot,dico):
 def meilleur_mot(motsfr,ll,dico):
     selection=mots_jouables(motsfr,ll)
     valmax=0
+    motmax=0
+    for mot in selection:
+        val=valeur_mot(mot,dico)
+        if (val>valmax):
+            motmax=mot
+            valmax=val       
+    return motmax,valmax
+
+def meilleurs_mots(motsfr,ll,dico):
+    selection=mots_jouables(motsfr,ll)
+    valmax=0
     motmax=[]
     for mot in selection:
         val=valeur_mot(mot,dico)
@@ -90,7 +101,7 @@ def meilleur_mot(motsfr,ll,dico):
 #PROGRAMME PRINCIPAL
 dico=init_dico()
 motsfr=generer_dico("littre.txt")
-ll=["P","S","I","S","U","F","A"]
+ll=["P","A","D","S","R","E","U"]
 
 m=mots_jouables(motsfr,ll)
 print(m)
@@ -100,6 +111,9 @@ print(val,"points")
 
 meill=meilleur_mot(motsfr,ll,dico)
 print(meill,"points")
+
+meis=meilleurs_mots(motsfr,ll,dico)
+print(meis,"points")
 
 #mots=["PIED","COURRIR","DEPIT","TAPIR","MARCHER"]
 #n=mot_jouable("PIED",ll)
