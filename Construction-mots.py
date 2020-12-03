@@ -39,12 +39,39 @@ def generer_dico(nf):
     fichier.close()
     return motsfr
 
+#position
+def position_jouable(i,j,plateau,lt,ll):
+    lettres=list(ll)
+    mot=[]
+    for lt in plateau:
+        if(lt=="MT" or lt=="MD" or lt=="LT" or lt=="LD"):
+            i=0
+        elif(lt==""):
+            i=0
+        elif(not(plateau[i+1][j]=="" and plateau[i-1][j]=="" and plateau[i][j+1]=="" and plateau[i][j-1]=="")):
+            i=0
+        else:
+            lettres.append(lt)
+            joue=mots_jouables(motsfr,lettres)
+            mot.append(joue)
+    return mot
+
+
+#voir si une place est libre
+def libre(i,j,plateau):
+    if(plateau[i][j]=="MT" or plateau[i][j]=="MD" or plateau[i][j]=="LT" or plateau[i][j]=="LD"):
+        return True
+    else:
+        return False
+    
 #Vérifie si le mot joué contient les lettre de la main
 def mot_jouable(mot,ll):           
     lettres_restantes = list(ll)
-    for l in mot:
-        if l in lettres_restantes:
-            lettres_restantes.remove(l)
+    for lt in mot:
+        if (lt in lettres_restantes):
+            lettres_restantes.remove(lt)
+        elif (lt=="?"):
+            lettres_restantes.remove(lt)
         else:
             return False
     return True
@@ -53,7 +80,7 @@ def mot_jouable(mot,ll):
 def mots_jouables(motsfr, ll):         
     selection = []
     for i in motsfr:
-        if mot_jouable(i, ll):
+        if (mot_jouable(i, ll)):
             selection.append(i)
     return selection
 
@@ -104,10 +131,10 @@ motsfr=generer_dico("littre.txt")
 ll=["P","A","D","S","R","E","U"]
 
 m=mots_jouables(motsfr,ll)
-print(m)
+#print(m)
 
-val=valeur_mot("CERISE",dico)
-print(val,"points")
+#val=valeur_mot("CERISE",dico)
+#print(val,"points")
 
 meill=meilleur_mot(motsfr,ll,dico)
 print(meill,"points")
