@@ -469,5 +469,63 @@ def registro(mots_tableau,mot,val):
     mots_tableau[mot]={"val":0}
     mots_tableau[mot]["val"]=val
     return mots_tableau
+def jetons_change(main):
+    jetons=[]
+    nb=int(input("Nombre de lettres a échanger: "))
+    for i in range (nb):
+        lt=input("Lettre a échanger: ").upper()
+        if (lt in main):
+            jetons.append(lt)
+    return jetons
 
+
+    
+
+    
+plateauBonus=init_bonus()   
+dico=init_dico ()
+sac=init_pioche(dico)
+j1=[]
+j1=completer_main(j1,sac)
+
+
+def tour_joueur():                    #Détermine le joueur qui doit jouer tout en conservant ses données (points, main et plateau)
+    for i in (nom):
+        print("C'est le tour de :",i)
+        print("Sa main est :",joueur[i]["Main"])
+
+    
+        x=int(input("Que voulez-vous faire ?                                                         1-Placer       2-Echanger         3-Passer       ->"))
+        if (x==1):
+            mot=str(input("Quelle mot souhaitez-vous placer ? --->"))
+            
+            test=tester_placement(plateauBonus, 0,3,"h",mot)
+            print(test)
+
+            plateau=placer_mot(plateauBonus,j1,mot, 0,5,"h")
+            for ligne in plateau:
+                print(*ligne, sep="|")
+            print("Main après coup :",j1)
+
+            
+        elif (x==2):
+            dico=init_dico ()
+            print("Joueur 1")
+            jetons1=jetons_change(j1)
+            J1=echanger(jetons1,j1,sac)
+            print("La main de j1:",J1)
+
+        
+def fin_partie(main,sac):                              #Détecte la fin de la partie (sac vide)
+    completer=7-len(main)
+    if(completer>len(sac)):
+        print("La partie est terminée, le sac est vide")
+        return -1
+    else:
+        return 0        
+
+
+def prochain_joueur(joueur):                                    #liste des joueurs suivant
+    nom=list(joueur.keys())
+    return nom
 
