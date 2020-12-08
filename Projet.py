@@ -489,13 +489,14 @@ j1=[]
 j1=completer_main(j1,sac)
 
 
-def tour_joueur():                    #Détermine le joueur qui doit jouer tout en conservant ses données (points, main et plateau)
+#Détermine le joueur qui doit jouer tout en conservant ses données (points, main et plateau)
+def tour_joueur():
     for i in (nom):
-        print("C'est le tour de :",i)
-        print("Sa main est :",joueur[i]["Main"])
+        print("                                                                                          C'est le tour de :",i)
+        print("Ta main est :",joueur[i]["Main"])
 
     
-        x=int(input("Que voulez-vous faire ?                                                         1-Placer       2-Echanger         3-Passer       ->"))
+        x=int(input("                                                                                Que veux-tu faire ?                                                             1-Placer       2-Echanger         3-Passer       ->"))
         if (x==1):
             mot=str(input("Quelle mot souhaitez-vous placer ? --->"))
             
@@ -510,10 +511,11 @@ def tour_joueur():                    #Détermine le joueur qui doit jouer tout 
             
         elif (x==2):
             dico=init_dico ()
-            print("Joueur 1")
             jetons1=jetons_change(j1)
             J1=echanger(jetons1,j1,sac)
-            print("La main de j1:",J1)
+            print("Ta nouvelle main est:",J1)
+
+        
 
         
 def fin_partie(main,sac):                              #Détecte la fin de la partie (sac vide)
