@@ -283,40 +283,42 @@ def tester_mots(plateau,i,j,dire,mot):
     #avec les coordones et la direction voir si le mot peut se placer en tenant en compte les lettres deja posés sur le plateau
 def tester_placement(plateau,i,j,dire,mot):
     lettres=[]
-    if(dire=="h"):
-        if(len(mot)<=(15-j)):
-            for lt in mot:
-                if(plateau[i][j]==lt or plateau[i][j]==lt+"*" or plateau[i][j]==lt+"+" or plateau[i][j]==lt+"#" or plateau[i][j]==lt+"^"):
-                    j+=1
-                elif(lt=="*" or lt=="#" or lt=="+" or lt=="^"):
-                    j=j
-                elif(plateau[i][j]=="  " or plateau[i][j]=="MT" or plateau[i][j]=="MD" or plateau[i][j]=="LT" or plateau[i][j]=="LD"):
-                    j+=1
-                    lettres.append(lt)
-                elif(plateau[i][j]!=lt):
-                    lettres=[]
-                    return lettres
-        else:
+    if(mot in motsfr):
+        if(dire=="h"):
+            if(len(mot)<=(15-j)):
+                for lt in mot:
+                    if(plateau[i][j]==lt or plateau[i][j]==lt+"*" or plateau[i][j]==lt+"+" or plateau[i][j]==lt+"#" or plateau[i][j]==lt+"^"):
+                        j+=1
+                    elif(lt=="*" or lt=="#" or lt=="+" or lt=="^"):
+                        j=j
+                    elif(plateau[i][j]=="  " or plateau[i][j]=="MT" or plateau[i][j]=="MD" or plateau[i][j]=="LT" or plateau[i][j]=="LD"):
+                        j+=1
+                        lettres.append(lt)
+                    elif(plateau[i][j]!=lt):
+                        lettres=[]
+                        return lettres
+            else:
+                return lettres
             return lettres
-        return lettres
-               
-    elif(dire=="v"):
-        if(len(mot)<=(15-i)):
-            for lt in mot:
-                if(plateau[i][j]==lt or plateau[i][j]==lt+"*" or plateau[i][j]==lt+"+" or plateau[i][j]==lt+"#" or plateau[i][j]==lt+"^"):
-                    i+=1
-                elif(lt=="*" or lt=="#" or lt=="+" or lt=="^"):
-                    i=i
-                elif(plateau[i][j]=="  " or plateau[i][j]=="MT" or plateau[i][j]=="MD" or plateau[i][j]=="LT" or plateau[i][j]=="LD"):
-                    i+=1
-                    lettres.append(lt)
-                elif(plateau[i][j]!=lt):
-                    lettres=[]
-                    return lettres
-        else:
-            return lettres
-        return lettres
 
+        elif(dire=="v"):
+            if(len(mot)<=(15-i)):
+                for lt in mot:
+                    if(plateau[i][j]==lt or plateau[i][j]==lt+"*" or plateau[i][j]==lt+"+" or plateau[i][j]==lt+"#" or plateau[i][j]==lt+"^"):
+                        i+=1
+                    elif(lt=="*" or lt=="#" or lt=="+" or lt=="^"):
+                        i=i
+                    elif(plateau[i][j]=="  " or plateau[i][j]=="MT" or plateau[i][j]=="MD" or plateau[i][j]=="LT" or plateau[i][j]=="LD"):
+                        i+=1
+                        lettres.append(lt)
+                    elif(plateau[i][j]!=lt):
+                        lettres=[]
+                        return lettres
+            else:
+                return lettres
+            return lettres
+    else:
+        return lettres
     #placer un mot avec la position initial et la direction, modifier le plateau et la main
 def placer_mot(plateau,ll,mot,i,j,dire):
     test=tester_placement(plateau,i,j,dire,mot)
@@ -467,4 +469,5 @@ def registro(mots_tableau,mot,val):
     mots_tableau[mot]={"val":0}
     mots_tableau[mot]["val"]=val
     return mots_tableau
+
 
