@@ -319,6 +319,7 @@ def tester_placement(plateau,i,j,dire,mot):
             return lettres
     else:
         return lettres
+    
     #placer un mot avec la position initial et la direction, modifier le plateau et la main
 def placer_mot(plateau,ll,mot,i,j,dire):
     test=tester_placement(plateau,i,j,dire,mot)
@@ -471,6 +472,19 @@ def registro(mots_tableau,mot,val):
     return mots_tableau
 
 
+#BOUCLE DE JEU A X JOUEURS
+    #Creer un dictionaire avec les joueurs, leurs mains et leurs points
+def joueurs(sac):
+    joueur={}
+    nbj=int(input("Combien de joueur êtes vous ?"))
+    for i in range (nbj) :
+        prenom=input("Quel est ton prénom ?")
+        joueur[prenom]= {"Main":0,"Points":0}
+        j=[]
+        j=completer_main(j,sac)
+        joueur[prenom]["Main"]=j
+    return joueur
+
     #Détermine le joueur qui doit jouer tout en conservant ses données (points, main et plateau)
 def tour_joueur():
     for i in (nom):
@@ -498,18 +512,45 @@ def tour_joueur():
             print("Ta nouvelle main est:",J1)
 
         
-
     #Détecte la fin de la partie (sac vide)        
 def fin_partie(main,sac):                              
     completer=7-len(main)
     if(completer>len(sac)):
         print("La partie est terminée, le sac est vide")
-        return -1
+        return False
     else:
-        return 0        
+        return True        
 
     #liste des joueurs en ordre
 def prochain_joueur(joueur):                                    
     nom=list(joueur.keys())
     return nom
 
+
+#Programme principal
+    #plateau de jeu avec les bonus
+plateau=init_bonus()
+
+    #dictoner avec les valeurs
+dico=init_dico()
+
+    #sac avec les jetons
+pioche=init_pioche(dico)
+
+    #liste de mots existants
+motsfr=generer_dico("FICHIERLETTRE.txt")
+
+    #dictioner avec les mots placés au tableau et ses valeurs
+mots_tableau={}
+
+    #dictioner avec les prenoms des joueurs, ses mains et ses points
+joueur=joueurs(pioche)
+print(joueur)
+
+    #liste avec les prenoms des joueurs en ordre
+nom=prochain_joueur(joueur)
+print(nom)
+
+    #affichage du plateau vide
+for ligne in plateau:
+    print(*ligne, sep="|")
