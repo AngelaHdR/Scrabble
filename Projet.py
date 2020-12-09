@@ -443,7 +443,7 @@ def position_jouable(plateau,ll):
         i+=1
     return mots
 
-#paser un mot avec les symboles des bonus a un mot sans les symboles des bonus
+      #paser un mot avec les symboles des bonus a un mot sans les symboles des bonus
 def mot_normal(mot):
     lettres=[]
     for lt in mot:
@@ -452,7 +452,7 @@ def mot_normal(mot):
         mots="".join(lettres)
     return mots
 
-#calculer le total des points apres avoir mis des lettres
+      #calculer le total des points apres avoir mis des lettres
 def valeur_tableau(chercher1,chercher):
     for mot in chercher1:
         if(mot not in chercher):
@@ -464,32 +464,14 @@ def valeur_tableau(chercher1,chercher):
             somme=somme+valeur
     return somme
 
-#creer un dictionaire avec les mots ecrites dans le tableau et sa valeur
+      #creer un dictionaire avec les mots ecrites dans le tableau et sa valeur
 def registro(mots_tableau,mot,val):
     mots_tableau[mot]={"val":0}
     mots_tableau[mot]["val"]=val
     return mots_tableau
-def jetons_change(main):
-    jetons=[]
-    nb=int(input("Nombre de lettres a échanger: "))
-    for i in range (nb):
-        lt=input("Lettre a échanger: ").upper()
-        if (lt in main):
-            jetons.append(lt)
-    return jetons
 
 
-    
-
-    
-plateauBonus=init_bonus()   
-dico=init_dico ()
-sac=init_pioche(dico)
-j1=[]
-j1=completer_main(j1,sac)
-
-
-#Détermine le joueur qui doit jouer tout en conservant ses données (points, main et plateau)
+      #Détermine le joueur qui doit jouer tout en conservant ses données (points, main et plateau)
 def tour_joueur():
     for i in (nom):
         print("                                                                                          C'est le tour de :",i)
@@ -517,8 +499,8 @@ def tour_joueur():
 
         
 
-        
-def fin_partie(main,sac):                              #Détecte la fin de la partie (sac vide)
+      #Détecte la fin de la partie (sac vide)        
+def fin_partie(main,sac):                              
     completer=7-len(main)
     if(completer>len(sac)):
         print("La partie est terminée, le sac est vide")
@@ -526,8 +508,8 @@ def fin_partie(main,sac):                              #Détecte la fin de la pa
     else:
         return 0        
 
-
-def prochain_joueur(joueur):                                    #liste des joueurs suivant
+      #liste des joueurs en ordre
+def prochain_joueur(joueur):                                    
     nom=list(joueur.keys())
     return nom
 
