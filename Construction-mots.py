@@ -42,21 +42,44 @@ def generer_dico(nf):
 #position
 def position_jouable(i,j,plateau,lt,ll):
     lettres=list(ll)
-    mot=[]
-    for lt in plateau:
-        if(lt=="MT" or lt=="MD" or lt=="LT" or lt=="LD"):
-            i=0
-        elif(lt==""):
-            i=0
-        elif(not(plateau[i+1][j]=="" and plateau[i-1][j]=="" and plateau[i][j+1]=="" and plateau[i][j-1]=="")):
-            i=0
-        else:
-            lettres.append(lt)
-            joue=mots_jouables(motsfr,lettres)
-            mot.append(joue)
+    mots=[]
+    for i in plateau:
+        for j in plateau[i]:
+            if(plateau[i][j]=="MT" and plateau[i][j]=="MD" and plateau[i][j]=="LT" and plateau[i][j]=="LD" or plateau[i][j]=="  "):
+                a=0
+            else:
+                lettres.append(plateau[i][j])
+                joue=meilleur_mot(motsfr,lettres,dico)
+                a=joue.index(plateau[i][j])
+                if(plateau[i+1][j]=="" and plateau[i-1][j]==""):
+                    dire="h"
+                    j=j-a
+                elif(plateau[i][j+1]=="" and plateau[i][j-1]==""):
+                    dire="v"
+                    i=i-a
+                test=tester_placement(plateau,i,j,dire,joue)
+                if(not test==[]):
+                    mots.append(joue)
     return mot
 
+a=position_jouable(0,2,plateau,lt,ll)
 
+lettres=list(ll)
+mots=[]
+for lt in mot:
+    i=plateau.index(lt)
+    j=plateau[i].index(lt)
+    if(plateau[i+1][j]=="" and plateau[i-1][j]==""):
+        i=0
+    elif(plateau[i][j+1]=="" and plateau[i][j-1]==""):
+        #se puede colocar palabra en vertical
+        lettre.append(plateau[i][j])
+        joue=mots_jouables(motsfr,lettres)
+        mot.append(joue)
+        
+
+
+        
 #voir si une place est libre
 def libre(i,j,plateau):
     if(plateau[i][j]=="MT" or plateau[i][j]=="MD" or plateau[i][j]=="LT" or plateau[i][j]=="LD"):

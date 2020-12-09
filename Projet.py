@@ -443,7 +443,7 @@ def position_jouable(plateau,ll):
         i+=1
     return mots
 
-      #paser un mot avec les symboles des bonus a un mot sans les symboles des bonus
+    #paser un mot avec les symboles des bonus a un mot sans les symboles des bonus
 def mot_normal(mot):
     lettres=[]
     for lt in mot:
@@ -464,14 +464,14 @@ def valeur_tableau(chercher1,chercher):
             somme=somme+valeur
     return somme
 
-      #creer un dictionaire avec les mots ecrites dans le tableau et sa valeur
+    #creer un dictionaire avec les mots ecrites dans le tableau et sa valeur
 def registro(mots_tableau,mot,val):
     mots_tableau[mot]={"val":0}
     mots_tableau[mot]["val"]=val
     return mots_tableau
 
 
-      #Détermine le joueur qui doit jouer tout en conservant ses données (points, main et plateau)
+    #Détermine le joueur qui doit jouer tout en conservant ses données (points, main et plateau)
 def tour_joueur():
     for i in (nom):
         print("                                                                                          C'est le tour de :",i)
@@ -499,7 +499,7 @@ def tour_joueur():
 
         
 
-      #Détecte la fin de la partie (sac vide)        
+    #Détecte la fin de la partie (sac vide)        
 def fin_partie(main,sac):                              
     completer=7-len(main)
     if(completer>len(sac)):
@@ -508,7 +508,7 @@ def fin_partie(main,sac):
     else:
         return 0        
 
-      #liste des joueurs en ordre
+    #liste des joueurs en ordre
 def prochain_joueur(joueur):                                    
     nom=list(joueur.keys())
     return nom
