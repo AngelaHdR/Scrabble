@@ -7,7 +7,7 @@ cases_LD = [[0,3],[0,11],[2,6],[2,8],[3,0],[3,7],[3,14],[6,2],[6,6],[6,8],[6,12]
       
 
 #PLATEAU DE JEU
-    #creer une liste de listes de 15 ligne et 15 colognes
+    #creer une liste de listes de 15 lignes et 15 colonnes
 def init_jetons():
     plateau=[]
     for i in range(15):
@@ -49,7 +49,7 @@ def affichage_jetons(i,j,plateau,lettre):
 
 
 #LA PIOCHE
-    #creer un dictioner avec le nombre et le valeur de chaque lettre
+    #creer un dictionnaire avec le nombre et le valeur de chaque lettre
 def init_dico ():                        
     dico={"A":{"occ":9 , "val":1},
        "B":{"occ":2 , "val":3},
@@ -111,9 +111,9 @@ def completer_main(main,sac):
     #creer une liste avec les jetons qu'on veut echanger
 def jetons_change(main):
     jetons=[]
-    nb=int(input("Nombre de lettres a echanger: "))
+    nb=int(input("Combien de lettres voulez-vous échanger: "))
     for i in range (nb):
-        lt=input("Lettre a echanger: ").upper()
+        lt=input("Lettres a échanger: ").upper()
         if (lt in main):
             jetons.append(lt)
     return jetons
@@ -127,7 +127,7 @@ def echanger(jetons,main,sac):
             sac.append(lt)
         main=completer_main(main,sac)
     else:
-        print("Il n'y a pas suffisant des jetons dans le sac")
+        print("Il n'y a pas suffisamment des jetons dans le sac")
     return main
 
 
@@ -361,7 +361,7 @@ def mots_plateau(plateau,motsfr):
     i=0
     j=0
     mots=[]
-    #reviser mots en horizontal
+    #identifier les mots en horizontal
     for i in range(15):
         j=0
         while((plateau[i][j]=="  " or plateau[i][j]=="MT" or plateau[i][j]=="MD" or plateau[i][j]=="LT" or plateau[i][j]=="LD") and (j<14)):
@@ -379,7 +379,7 @@ def mots_plateau(plateau,motsfr):
             "ERREUR"
         mot=[]
             
-    #reviser mots en vertical
+    #identifier les mots en vertical
     for j in range(15):
         i=0
         while((plateau[i][j]=="  " or plateau[i][j]=="MT" or plateau[i][j]=="MD" or plateau[i][j]=="LT" or plateau[i][j]=="LD") and (i<14)):
@@ -483,7 +483,7 @@ def valeur_tableau(chercher1,chercher):
             somme=somme+valeur
     return somme
 
-    #creer un dictionaire avec les mots ecrites dans le tableau et sa valeur
+    #creer un dictionaire avec les mots écrits dans le tableau et sa valeur
 def registro(mots_tableau,mot,val):
     mots_tableau[mot]={"val":0}
     mots_tableau[mot]["val"]=val
@@ -491,10 +491,10 @@ def registro(mots_tableau,mot,val):
 
 
 #BOUCLE DE JEU A X JOUEURS
-    #Creer un dictionaire avec les joueurs, leurs mains et leurs points
+    #Creer un dictionnaire avec les joueurs, leurs mains et leurs points
 def joueurs(sac):
     joueur={}
-    nbj=int(input("Combien de joueur êtes vous ?"))
+    nbj=int(input("Combien de joueurs êtes-vous ?"))
     for i in range (nbj) :
         prenom=input("Quel est ton prénom ?")
         joueur[prenom]= {"Main":0,"Points":0}
@@ -507,10 +507,10 @@ def joueurs(sac):
 def tour_joueur():
     for i in (nom):
         print("                                                                                          C'est le tour de :",i)
-        print("Ta main est :",joueur[i]["Main"])
+        print("Votre main est :",joueur[i]["Main"])
 
     
-        x=int(input("                                                                                Que veux-tu faire ?                                                             1-Placer       2-Echanger         3-Passer       ->"))
+        x=int(input("                                                                                Que voulez-vous faire ?                                                             1-Placer       2-Echanger         3-Passer       ->"))
         if (x==1):
             mot=str(input("Quelle mot souhaitez-vous placer ? --->"))
             
@@ -527,7 +527,7 @@ def tour_joueur():
             dico=init_dico ()
             jetons1=jetons_change(j1)
             J1=echanger(jetons1,j1,sac)
-            print("Ta nouvelle main est:",J1)
+            print("Votre nouvelle main est:",J1)
 
         
     #Détecte la fin de la partie (sac vide)        
