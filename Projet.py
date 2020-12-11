@@ -322,7 +322,8 @@ def tester_placement(plateau,i,j,dire,mot):
     
     #placer un mot avec la position initial et la direction, modifier le plateau et la main
 def placer_mot(plateau,ll,mot,i,j,dire):
-    test=tester_placement(plateau,i,j,dire,mot)
+    normal=mot_normal(mot)
+    test=tester_placement(plateau,i,j,dire,normal)
     #print(test)
     mot2=list(mot)
     lettre=[]
@@ -398,8 +399,8 @@ def mots_plateau(plateau,motsfr):
 #aun no la he usado
 def position_jouable(plateau,ll):
     lettres=list(ll)
-    mots=[]
-    jouable=[]
+    mots={}
+    jouable={}
     i=0
     for l in plateau:
         j=0
@@ -411,9 +412,8 @@ def position_jouable(plateau,ll):
                 x=list(plateau[i][j])
                 x.pop(1)
                 x="".join(x)
-                #print(x)
                 lettres.append(x)
-                print(lettres)
+                #on cherche le mots jouables et qui ont la lettre x
                 joue=mots_jouables(motsfr,lettres)
                 for mot in joue:
                     mot2=list(mot)
@@ -424,25 +424,43 @@ def position_jouable(plateau,ll):
                         
                         if((plateau[i+1][j]=="MT" or plateau[i+1][j]=="MD" or plateau[i+1][j]=="LT" or plateau[i+1][j]=="LD" or plateau[i+1][j]=="  ") and (plateau[i-1][j]=="MT" or plateau[i-1][j]=="MD" or plateau[i-1][j]=="LT" or plateau[i-1][j]=="LD" or plateau[i-1][j]=="  ")):
                             dire="v"
-                            i=i-b
+                            pi=i-b
+                            pj=j
                         elif((plateau[i][j+1]=="MT" or plateau[i][j+1]=="MD" or plateau[i][j+1]=="LT" or plateau[i][j+1]=="LD" or plateau[i][j+1]=="  ") and (plateau[i][j-1]=="MT" or plateau[i][j-1]=="MD" or plateau[i][j-1]=="LT" or plateau[i][j-1]=="LD" or plateau[i][j-1]=="  ")):
                             dire="h"
-                            j=j-b
-                        print(dire)
-                        print(i,j)
-                        test=tester_placement(plateau,i,j,dire,mot)
+                            pi=i
+                            pj=j-b
+                        #on teste le placement de chaque mot
+                        test=tester_placement(plateau,pi,pj,dire,mot)
                         if(test!=[]):
-                            jouable.append(mot)
-                        print(jouable)
+                            jouable[mot]={"i":0,"j":0,"dire":0,"lettre":0}
+                            jouable[mot]["i"]=pi
+                            jouable[mot]["j"]=pj
+                            jouable[mot]["dire"]=dire
+                            jouable[mot]["lettre"]=x
+                #on calcule les meilleurs mots de la liste de mots jouables avec la lettre x
                 if(jouable!=[]):
                     meilleur=meilleurs_mots(jouable,lettres,dico,i,j,dire)
                     for mot in meilleur:
-                        mots.append(mot)
+                        val=valeur_mot(mot,dico)
+                        normal=mot_normal(mot)
+                        mots[normal]=jouable[normal]
+                        mots[normal]["val"]=val
+                
                 lettres.remove(x)
-                jouable=[]
+                jouable={}
             j+=1
         i+=1
-    return mots
+    #on filtre tous les meilleurs mots de chaque lettre pour trouver la valeur plus haute
+    valmax=0
+    for mot in mots:
+        if(mots[mot]["val"]>valmax):
+            valmax=mots[mot]["val"]
+            motmax=mot
+        
+    jouable[motmax]=mots[motmax]
+    return jouable
+
 
     #paser un mot avec les symboles des bonus a un mot sans les symboles des bonus
 def mot_normal(mot):
