@@ -367,7 +367,8 @@ def placer_mot(plateau,ll,mot,i,j,dire):
                 ll.remove(lt)
         
         return plateau
-    
+
+#FONCTIONS INVENTÉS
     #Retrouver tous les mots qui sont placés dans le plateau
 def mots_plateau(plateau,motsfr):
     mot=[]
@@ -556,6 +557,21 @@ def tour_joueur():
             J1=echanger(jetons1,j1,sac)
             print("Ta nouvelle main est:",J1)
 
+    #Détecte la fin de la partie (sac vide)        
+def fin_partie(main,sac):                              
+    completer=7-len(main)
+    if(completer>len(sac)):
+        print("La partie est terminée, le sac est vide")
+        return False
+    else:
+        return True        
+
+    #liste des joueurs en ordre
+def prochain_joueur(joueur):                                    
+    nom=list(joueur.keys())
+    return nom
+
+#BONUS INTELLIGENCE ARTIFICIELLE
 #Determiner le joueur qui doit jouer tout en conservant ses données (points, main et plateau) faire les actions de maniere automatique
 def tour_ordi(roun, plateau,i,sac):
     print("\nC'est le tour de :",i)
@@ -632,18 +648,3 @@ def tour_ordi(roun, plateau,i,sac):
     x=joueur[i]["Points"]
     joueur[i]["Points"]=val+x
     return plateau
-
-    #Détecte la fin de la partie (sac vide)        
-def fin_partie(main,sac):                              
-    completer=7-len(main)
-    if(completer>len(sac)):
-        print("La partie est terminée, le sac est vide")
-        return False
-    else:
-        return True        
-
-    #liste des joueurs en ordre
-def prochain_joueur(joueur):                                    
-    nom=list(joueur.keys())
-    return nom
-
