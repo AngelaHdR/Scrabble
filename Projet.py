@@ -512,7 +512,7 @@ def mots_nouveaux(chercher1,chercher2):
     return nouveaux
 
     #creer un dictionaire avec les mots écrits dans le tableau et sa valeur
-def registro(mots_tableau,mot,val):
+def registre(mots_tableau,mot,val):
     mots_tableau[mot]={"val":0}
     mots_tableau[mot]["val"]=val
     return mots_tableau
@@ -531,19 +531,26 @@ def joueurs(sac):
         joueur[prenom]["Main"]=j
     return joueur
 
+       #BONUS AIDE DE JEU
     #Détermine le joueur qui doit jouer tout en conservant ses données (points, main et plateau)
 def tour_joueur():
     for i in (nom):
         print("\nC'est le tour de :",i)
         print("Ta main est :",joueur[i]["Main"])
-        x=int(input("\nQue veux-tu faire ?\n1-Placer       2-Echanger         3-Passer       ->"))
+        x=int(input("\nQue veux-tu faire ?\n1-Placer   2-Echanger   3-Passer   4-Aide de vocabulaire->"))
             #Placer un mot
         if (x==1):
-            mot=str(input("Quelle mot souhaitez-vous placer ? --->"))
-            
-            test=tester_placement(plateau, 0,3,"h",mot)
-            print(test)
-
+            mot=input("Quelle mot souhaitez-vous placer ? --->")
+            i=int(input("Ligne de la premier lettre: "))
+            j=int(input("Colonne de la premier lettre: "))
+            dire=input("Direction horzontal (h) ou vertical (v): ")
+            test=tester_placement(plateau, i,j,dire,mot)
+            while(test==[]):
+                mot=input("Quelle mot souhaitez-vous placer ? --->")
+                i=int(input("Ligne de la premier lettre: "))
+                j=int(input("Colonne de la premier lettre: "))
+                dire=input("Direction horzontal (h) ou vertical (v): ")
+                test=tester_placement(plateau, i,j,dire,mot)
             plateau=placer_mot(plateau,joueur[i]["Main"],mot, 0,5,"h")
             for ligne in plateau:
                 print(*ligne, sep="|")
@@ -555,16 +562,36 @@ def tour_joueur():
         elif (x==2):
             jetons1=jetons_change(j1)
             J1=echanger(jetons1,j1,sac)
+            joueur[i]["Main"]=J1
             print("Ta nouvelle main est:",J1)
+            
+            #Aide pour creer des mots avec une main
+        elif (x==4):
+            i=0
+            mot=mots_jouables(motsfr,joueur[i]["Main"])
+            print(mot)
 
-    #Détecte la fin de la partie (sac vide)        
-def fin_partie(main,sac):                              
+       #Détecte la fin de la partie (sac vide)        
+def fin_partie (main,sac):
     completer=7-len(main)
     if(completer>len(sac)):
         print("La partie est terminée, le sac est vide")
-        return False
+        print("Les scores de tous les joueurs sont:")
+        valmax=0
+        for nom in joueur:
+            malus=0
+            for lettre in joueur[nom]["Main"]:
+                val=dico[lettre]["val"]
+                malus=malus+val
+            points=joueur[nom]["Points"]-malus
+            print(nom, ":",points,"points")
+            if(joueur[nom]["Points"]>valmax):
+                valmax=joueur[nom]["Points"]
+                gagnant=nom
+        print("Le gagnant est",gagnant,"avec",valmax,"points")
+        
     else:
-        return True        
+        return True      
 
     #liste des joueurs en ordre
 def prochain_joueur(joueur):                                    
