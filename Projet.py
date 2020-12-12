@@ -34,13 +34,14 @@ def init_bonus():
 
     #afficher le jeton dans la position choisit
 def affichage_jetons(i,j,plateau,lettre):
-    if(plateau[i][j]=="MT"):
+    position=[i,j]
+    if(position in cases_MT):
         plateau[i][j]=lettre+"#"
-    elif(plateau[i][j]=="MD"):
+    elif(position in cases_MD):
         plateau[i][j]=lettre+"*"
-    elif(plateau[i][j]=="LD"):
+    elif(position in cases_LD):
         plateau[i][j]=lettre+"^"
-    elif(plateau[i][j]=="LT"):
+    elif(position in cases_LT):
         plateau[i][j]=lettre+"+"
     else:
         plateau[i][j]=lettre+" "
@@ -159,6 +160,55 @@ def mots_jouables(motsfr, ll):
             selection.append(i)
     return selection
 
+    #prouver le mot dans une position pour pouvoir calculer sa valeur avec les bonus
+def tester_mots(plateau,i,j,dire,mot):
+    mot2=[]
+    if(dire=="h"):
+        for lt in mot:
+            if(plateau[i][j]=="MT" or plateau[i][j]==lt+"#"):
+                mot2.append(lt)
+                mot2.append("#")
+            elif(plateau[i][j]=="MD" or plateau[i][j]==lt+"*"):
+                mot2.append(lt)
+                mot2.append("*")
+            elif(plateau[i][j]=="LD" or plateau[i][j]==lt+"^"):
+                mot2.append(lt)
+                mot2.append("^")
+            elif(plateau[i][j]=="LT" or plateau[i][j]==lt+"+"):
+                mot2.append(lt)
+                mot2.append("+")
+            else:
+                mot2.append(lt)
+            j+=1
+    elif(dire=="v"):
+        for lt in mot:
+            if(plateau[i][j]=="MT" or plateau[i][j]==lt+"#"):
+                mot2.append(lt)
+                mot2.append("#")
+            elif(plateau[i][j]=="MD" or plateau[i][j]==lt+"*"):
+                mot2.append(lt)
+                mot2.append("*")
+            elif(plateau[i][j]=="LD" or plateau[i][j]==lt+"^"):
+                mot2.append(lt)
+                mot2.append("^")
+            elif(plateau[i][j]=="LT" or plateau[i][j]==lt+"+"):
+                mot2.append(lt)
+                mot2.append("+")
+            else:
+                mot2.append(lt)
+            i+=1
+    mot2="".join(mot2)
+    return mot2
+
+    #paser un mot avec les symboles des bonus a un mot sans les symboles des bonus
+def mot_normal(mot):
+    lettres=[]
+    for lt in mot:
+        if(not(lt=="#" or lt=="*" or lt=="+" or lt=="^")):
+            lettres.append(lt)
+        mots="".join(lettres)
+    return mots
+
 
 #VALEUR DES MOTS
     #Dans le dico on trouve les valeurs de chaque lettre et on calcule la somme totale avec les bonus
@@ -166,17 +216,17 @@ def valeur_mot(mot,dico):
     somme = 0
     a=1
     b=1
-    for i in mot:
-        if(i=="#"):
+    for lt in mot:
+        if(lt=="#"):
             a=a*3
-        elif(i=="*"):
+        elif(lt=="*"):
             b=b*2
-        elif(i=="+"):
+        elif(lt=="+"):
             somme=somme+valeur*2
-        elif(i=="^"):
+        elif(lt=="^"):
             somme=somme+valeur
         else:
-            val=dico[i]["val"]
+            val=dico[lt]["val"]
         somme=somme+val
         valeur=val
         val=0
@@ -239,46 +289,6 @@ def lire_coords(tableau):
         else:
             a=0
     return position
-
-    #trouver le mot dans une position pour pouvoir calculer sa valeur avec les bonus
-def tester_mots(plateau,i,j,dire,mot):
-    mot2=[]
-    if(dire=="h"):
-        for lt in mot:
-            if(plateau[i][j]=="MT" or plateau[i][j]==lt+"#"):
-                mot2.append(lt)
-                mot2.append("#")
-            elif(plateau[i][j]=="MD" or plateau[i][j]==lt+"*"):
-                mot2.append(lt)
-                mot2.append("*")
-            elif(plateau[i][j]=="LD" or plateau[i][j]==lt+"^"):
-                mot2.append(lt)
-                mot2.append("^")
-            elif(plateau[i][j]=="LT" or plateau[i][j]==lt+"+"):
-                mot2.append(lt)
-                mot2.append("+")
-            else:
-                mot2.append(lt)
-            j+=1
-    elif(dire=="v"):
-        for lt in mot:
-            if(plateau[i][j]=="MT" or plateau[i][j]==lt+"#"):
-                mot2.append(lt)
-                mot2.append("#")
-            elif(plateau[i][j]=="MD" or plateau[i][j]==lt+"*"):
-                mot2.append(lt)
-                mot2.append("*")
-            elif(plateau[i][j]=="LD" or plateau[i][j]==lt+"^"):
-                mot2.append(lt)
-                mot2.append("^")
-            elif(plateau[i][j]=="LT" or plateau[i][j]==lt+"+"):
-                mot2.append(lt)
-                mot2.append("+")
-            else:
-                mot2.append(lt)
-            i+=1
-    mot2="".join(mot2)
-    return mot2
 
     #avec les coordones et la direction voir si le mot peut se placer en tenant en compte les lettres deja posés sur le plateau
 def tester_placement(plateau,i,j,dire,mot):
@@ -351,7 +361,10 @@ def placer_mot(plateau,ll,mot,i,j,dire):
             mot="".join(lettre)
             
         for lt in test:
-            ll.remove(lt)
+            if ((lt not in ll) and ("?" in ll)):
+                ll.remove("?")
+            else:
+                ll.remove(lt)
         
         return plateau
     
@@ -360,8 +373,8 @@ def mots_plateau(plateau,motsfr):
     mot=[]
     i=0
     j=0
-    mots=[]
-    #identifier les mots en horizontal
+    mots={}
+    #reviser mots en horizontal
     for i in range(15):
         j=0
         while((plateau[i][j]=="  " or plateau[i][j]=="MT" or plateau[i][j]=="MD" or plateau[i][j]=="LT" or plateau[i][j]=="LD") and (j<14)):
@@ -374,12 +387,11 @@ def mots_plateau(plateau,motsfr):
             j+=1
         mot="".join(mot)
         if (mot in motsfr):
-            mots.append(mot)
-        else:
-            "ERREUR"
+            mots[mot]={"val":0}
+        
         mot=[]
             
-    #identifier les mots en vertical
+    #reviser mots en vertical
     for j in range(15):
         i=0
         while((plateau[i][j]=="  " or plateau[i][j]=="MT" or plateau[i][j]=="MD" or plateau[i][j]=="LT" or plateau[i][j]=="LD") and (i<14)):
@@ -392,11 +404,12 @@ def mots_plateau(plateau,motsfr):
             i+=1
         mot="".join(mot)
         if (mot in motsfr):
-            mots.append(mot)
+            mots[mot]={"val":0}
+        
         mot=[]   
     return mots
 
-#aun no la he usado
+#Trouver le meilleur mot qui peut se jouer en utilisant un des jetons du tableau, renvoi le mot, la position, la direction, la valeur et la lettre utilisé
 def position_jouable(plateau,ll):
     lettres=list(ll)
     mots={}
@@ -421,17 +434,21 @@ def position_jouable(plateau,ll):
                         joue.remove(mot)
                     else:
                         b=mot2.index(x)
-                        
+                        pi=i
+                        pj=j
                         if((plateau[i+1][j]=="MT" or plateau[i+1][j]=="MD" or plateau[i+1][j]=="LT" or plateau[i+1][j]=="LD" or plateau[i+1][j]=="  ") and (plateau[i-1][j]=="MT" or plateau[i-1][j]=="MD" or plateau[i-1][j]=="LT" or plateau[i-1][j]=="LD" or plateau[i-1][j]=="  ")):
                             dire="v"
                             pi=i-b
                             pj=j
+                            test=tester_placement(plateau,pi,pj,dire,mot)
                         elif((plateau[i][j+1]=="MT" or plateau[i][j+1]=="MD" or plateau[i][j+1]=="LT" or plateau[i][j+1]=="LD" or plateau[i][j+1]=="  ") and (plateau[i][j-1]=="MT" or plateau[i][j-1]=="MD" or plateau[i][j-1]=="LT" or plateau[i][j-1]=="LD" or plateau[i][j-1]=="  ")):
                             dire="h"
                             pi=i
                             pj=j-b
                         #on teste le placement de chaque mot
-                        test=tester_placement(plateau,pi,pj,dire,mot)
+                            test=tester_placement(plateau,pi,pj,dire,mot)
+                        else:
+                            test=[]
                         if(test!=[]):
                             jouable[mot]={"i":0,"j":0,"dire":0,"lettre":0}
                             jouable[mot]["i"]=pi
@@ -439,9 +456,9 @@ def position_jouable(plateau,ll):
                             jouable[mot]["dire"]=dire
                             jouable[mot]["lettre"]=x
                 #on calcule les meilleurs mots de la liste de mots jouables avec la lettre x
-                if(jouable!=[]):
-                    meilleur=meilleurs_mots(jouable,lettres,dico,i,j,dire)
-                    for mot in meilleur:
+                jou=list(jouable.keys())
+                if(len(jou)>0):
+                    for mot in jou:
                         val=valeur_mot(mot,dico)
                         normal=mot_normal(mot)
                         mots[normal]=jouable[normal]
@@ -453,35 +470,45 @@ def position_jouable(plateau,ll):
         i+=1
     #on filtre tous les meilleurs mots de chaque lettre pour trouver la valeur plus haute
     valmax=0
+    motmax=[]
     for mot in mots:
         if(mots[mot]["val"]>valmax):
+            motmax=[]
             valmax=mots[mot]["val"]
-            motmax=mot
-        
-    jouable[motmax]=mots[motmax]
+            motmax.append(mot)
+        elif(mots[mot]["val"]==valmax):
+            motmax.append(mot)
+    
+    for mot in motmax:    
+        jouable[mot]=mots[mot]
     return jouable
 
-
-    #paser un mot avec les symboles des bonus a un mot sans les symboles des bonus
-def mot_normal(mot):
-    lettres=[]
-    for lt in mot:
-        if(not(lt=="#" or lt=="*" or lt=="+" or lt=="^")):
-            lettres.append(lt)
-        mots="".join(lettres)
-    return mots
-
       #calculer le total des points apres avoir mis des lettres
-def valeur_tableau(chercher1,chercher):
-    for mot in chercher1:
-        if(mot not in chercher):
-            del chercher1[mot]
+def valeur_tableau(mots_nouveaux):
     somme=0
-    for mot in chercher:
-        if(mot not in chercher1):
-            valeur=mots_tableau[mot]["val"]
-            somme=somme+valeur
+    mots=list(mots_nouveaux.keys())
+    for mot in mots:
+        valeur=mots_tableau[mot]["val"]
+        somme=somme+valeur
     return somme
+
+#trouver les nouveaux mots affichés
+def mots_nouveaux(chercher1,chercher2):
+    mots={}
+    nouveaux={}
+    c1=list(chercher1.keys())
+    c2=list(chercher2.keys())
+    for mot in c1:
+        if(mot not in c2):
+            del chercher1[mot]
+    for mot in c2:
+        if(mot not in c1):
+            mots[mot]=chercher2[mot]
+            nouveaux[mot]=chercher2[mot]
+    m=list(mots.keys())
+    for mot in m:
+        regis=registre(mots_tableau,mot,mots[mot]["val"])
+    return nouveaux
 
     #creer un dictionaire avec les mots écrits dans le tableau et sa valeur
 def registro(mots_tableau,mot,val):
@@ -506,30 +533,106 @@ def joueurs(sac):
     #Détermine le joueur qui doit jouer tout en conservant ses données (points, main et plateau)
 def tour_joueur():
     for i in (nom):
-        print("                                                                                          C'est le tour de :",i)
-        print("Votre main est :",joueur[i]["Main"])
-
-    
-        x=int(input("                                                                                Que voulez-vous faire ?                                                             1-Placer       2-Echanger         3-Passer       ->"))
+        print("\nC'est le tour de :",i)
+        print("Ta main est :",joueur[i]["Main"])
+        x=int(input("\nQue veux-tu faire ?\n1-Placer       2-Echanger         3-Passer       ->"))
+            #Placer un mot
         if (x==1):
             mot=str(input("Quelle mot souhaitez-vous placer ? --->"))
             
-            test=tester_placement(plateauBonus, 0,3,"h",mot)
+            test=tester_placement(plateau, 0,3,"h",mot)
             print(test)
 
-            plateau=placer_mot(plateauBonus,j1,mot, 0,5,"h")
+            plateau=placer_mot(plateau,joueur[i]["Main"],mot, 0,5,"h")
             for ligne in plateau:
                 print(*ligne, sep="|")
+            j1=completer_main(joueur[i]["Main"],sac)
+            joueur[i]["Main"]=j1
             print("Main après coup :",j1)
 
-            
+            #Echanger des lettres    
         elif (x==2):
-            dico=init_dico ()
             jetons1=jetons_change(j1)
             J1=echanger(jetons1,j1,sac)
-            print("Votre nouvelle main est:",J1)
+            print("Ta nouvelle main est:",J1)
 
-        
+#Determiner le joueur qui doit jouer tout en conservant ses données (points, main et plateau) faire les actions de maniere automatique
+def tour_ordi(roun, plateau,i,sac):
+    print("\nC'est le tour de :",i)
+    print("Ta main est :",joueur[i]["Main"])
+    plateau2=plateau
+    main2=joueur[i]["Main"]
+    chercher1=mots_plateau(plateau,motsfr)
+    print(chercher1)
+    if(roun==0):
+        mei=meilleurs_mots(motsfr,joueur[i]["Main"],dico,7,7,"h")
+        print(mei)
+        if(len(mei)>1):
+            mot=int(input("Choisir l'index d'un mot pour placer: "))
+            plateau=placer_mot(plateau,joueur[i]["Main"],mei[mot],7,7,"h")
+            joueur[i]["Main"]=completer_main(joueur[i]["Main"],sac)
+            chercher2=mots_plateau(plateau,motsfr)
+            val=valeur_mot(mei[mot],dico)
+            normal=mot_normal(mei[mot])
+            chercher2[normal]["val"]=val
+            print(chercher2)
+            
+        elif(len(mei)==0):
+            jetons1=jetons_change(joueur[i]["Main"])
+            J1=echanger(jetons1,joueur[i]["Main"],sac)
+            joueur[i]["Main"]=J1
+            chercher2={}
+        else:
+            mei=mei[0]
+            plateau=placer_mot(plateau,joueur[i]["Main"],mei,7,7,"h")
+            joueur[i]["Main"]=completer_main(joueur[i]["Main"],sac)
+            chercher2=mots_plateau(plateau,motsfr)
+            val=valeur_mot(mei,dico)
+            normal=mot_normal(mei)
+            chercher2[normal]["val"]=val
+            print(chercher2)
+        roun+=1
+    else:
+        pos=position_jouable(plateau,joueur[i]["Main"])
+        print(pos)
+        if(len(pos.keys())>1):
+            mot=input("Choisir un mot pour placer: ")
+            plateau=placer_mot(plateau,joueur[i]["Main"],mot,pos[mot]["i"],pos[mot]["j"],pos[mot]["dire"])
+            joueur[i]["Main"]=completer_main(joueur[i]["Main"],sac)
+            chercher2=mots_plateau(plateau,motsfr)
+            print(chercher2)
+            if (chercher2==[]):
+                joueur[i]["Main"]=main2
+                return plateau2
+            else:
+                val=pos[mot]["val"]
+                chercher2[mot]["val"]=val
+        elif(len(pos.keys())==0):
+            jetons1=jetons_change(joueur[i]["Main"])
+            J1=echanger(jetons1,joueur[i]["Main"],sac)
+            joueur[i]["Main"]=J1
+            chercher2={}
+        else:
+            mot=list(pos.keys())
+            mot=mot[0]
+            plateau=placer_mot(plateau,joueur[i]["Main"],mot,pos[mot]["i"],pos[mot]["j"],pos[mot]["dire"])
+            joueur[i]["Main"]=completer_main(joueur[i]["Main"],sac)
+            chercher2=mots_plateau(plateau,motsfr)
+            print(chercher2)
+            if (chercher2==[]):
+                joueur[i]["Main"]=main2
+                return plateau2
+            else:
+                val=pos[mot]["val"]
+                chercher2[mot]["val"]=val
+    mt=mots_nouveaux(chercher1,chercher2)
+    print(mt)
+    val=valeur_tableau(mt)
+    print(val)
+    x=joueur[i]["Points"]
+    joueur[i]["Points"]=val+x
+    return plateau
+
     #Détecte la fin de la partie (sac vide)        
 def fin_partie(main,sac):                              
     completer=7-len(main)
