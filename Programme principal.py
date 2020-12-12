@@ -26,7 +26,32 @@ print(nom)
 for ligne in plateau:
     print(*ligne, sep="|")
     
-while (fin_partie(joueur[prenom]["Main"],sac)):
-    x=tour_joueur()
+#Jeu entre x personnes
+res=True
+while(res==True):
+    for i in range(len(nom)):
+        if(fin_partie(joueur[nom[i]]["Main"],pioche)):
+            x=tour_joueur(plateau,pioche,nom[i])
+            for ligne in x:
+                print(*ligne, sep="|")
+            print(joueur)
+        
+        else:
+            res=False
+
+#Jeu entre x ordinateurs
+roun=0
+res=True
+while(res==True):
+    for i in range(len(nom)):
+        if(fin_partie(joueur[nom[i]]["Main"],pioche)):
+            x=tour_ordi(roun,plateau,nom[i],pioche)
+            for ligne in x:
+                print(*ligne, sep="|")
+            print(joueur)
+        
+        else:
+            res=False
+        roun+=1
 
 
