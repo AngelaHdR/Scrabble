@@ -533,43 +533,55 @@ def joueurs(sac):
 
        #BONUS AIDE DE JEU
     #Détermine le joueur qui doit jouer tout en conservant ses données (points, main et plateau)
-def tour_joueur():
-    for i in (nom):
-        print("\nC'est le tour de :",i)
-        print("Ta main est :",joueur[i]["Main"])
-        x=int(input("\nQue veux-tu faire ?\n1-Placer   2-Echanger   3-Passer   4-Aide de vocabulaire->"))
+def tour_joueur(plateau,sac,i):
+    print("\nC'est le tour de :",i)
+    print("Ta main est :",joueur[i]["Main"])
+    x=int(input("\nQue veux-tu faire ?\n1-Placer   2-Echanger   3-Passer   4-Aide de vocabulaire->"))
             #Placer un mot
-        if (x==1):
+    if (x==1):
+        mot=input("Quelle mot souhaitez-vous placer ? --->")
+        l=int(input("Ligne de la premier lettre: "))
+        c=int(input("Colonne de la premier lettre: "))
+        dire=input("Direction horzontal (h) ou vertical (v): ")
+        test=tester_placement(plateau, l,c,dire,mot)
+        while(test==[]):
+            print("ERREUR")
             mot=input("Quelle mot souhaitez-vous placer ? --->")
-            i=int(input("Ligne de la premier lettre: "))
-            j=int(input("Colonne de la premier lettre: "))
+            l=int(input("Ligne de la premier lettre: "))
+            c=int(input("Colonne de la premier lettre: "))
             dire=input("Direction horzontal (h) ou vertical (v): ")
-            test=tester_placement(plateau, i,j,dire,mot)
-            while(test==[]):
-                mot=input("Quelle mot souhaitez-vous placer ? --->")
-                i=int(input("Ligne de la premier lettre: "))
-                j=int(input("Colonne de la premier lettre: "))
-                dire=input("Direction horzontal (h) ou vertical (v): ")
-                test=tester_placement(plateau, i,j,dire,mot)
-            plateau=placer_mot(plateau,joueur[i]["Main"],mot, 0,5,"h")
-            for ligne in plateau:
-                print(*ligne, sep="|")
-            j1=completer_main(joueur[i]["Main"],sac)
-            joueur[i]["Main"]=j1
-            print("Main après coup :",j1)
+            test=tester_placement(plateau, l,c,dire,mot)
+        plateau=placer_mot(plateau,joueur[i]["Main"],mot, l,c,dire)
+        j1=completer_main(joueur[i]["Main"],sac)
+        joueur[i]["Main"]=j1
 
             #Echanger des lettres    
-        elif (x==2):
-            jetons1=jetons_change(j1)
-            J1=echanger(jetons1,j1,sac)
-            joueur[i]["Main"]=J1
-            print("Ta nouvelle main est:",J1)
+    elif (x==2):
+        jetons1=jetons_change(joueur[i]["Main"])
+        J1=echanger(jetons1,joueur[i]["Main"],sac)
+        joueur[i]["Main"]=J1
+        print("Ta nouvelle main est:",J1)
             
             #Aide pour creer des mots avec une main
-        elif (x==4):
-            i=0
-            mot=mots_jouables(motsfr,joueur[i]["Main"])
-            print(mot)
+    elif (x==4):
+        mot=mots_jouables(motsfr,joueur[i]["Main"])
+        print(mot)
+        mot=input("Quelle mot souhaitez-vous placer ? --->")
+        l=int(input("Ligne de la premier lettre: "))
+        c=int(input("Colonne de la premier lettre: "))
+        dire=input("Direction horzontal (h) ou vertical (v): ")
+        test=tester_placement(plateau, l,c,dire,mot)
+        while(test==[]):
+            print("ERREUR")
+            mot=input("Quelle mot souhaitez-vous placer ? --->")
+            l=int(input("Ligne de la premier lettre: "))
+            c=int(input("Colonne de la premier lettre: "))
+            dire=input("Direction horzontal (h) ou vertical (v): ")
+            test=tester_placement(plateau, l,c,dire,mot)
+        plateau=placer_mot(plateau,joueur[i]["Main"],mot, l,c,dire)
+        j1=completer_main(joueur[i]["Main"],sac)
+        joueur[i]["Main"]=j1
+    return plateau
 
        #Détecte la fin de la partie (sac vide)        
 def fin_partie (main,sac):
@@ -606,7 +618,6 @@ def tour_ordi(roun, plateau,i,sac):
     plateau2=plateau
     main2=joueur[i]["Main"]
     chercher1=mots_plateau(plateau,motsfr)
-    print(chercher1)
     if(roun==0):
         mei=meilleurs_mots(motsfr,joueur[i]["Main"],dico,7,7,"h")
         print(mei)
@@ -618,7 +629,6 @@ def tour_ordi(roun, plateau,i,sac):
             val=valeur_mot(mei[mot],dico)
             normal=mot_normal(mei[mot])
             chercher2[normal]["val"]=val
-            print(chercher2)
             
         elif(len(mei)==0):
             jetons1=jetons_change(joueur[i]["Main"])
@@ -633,7 +643,6 @@ def tour_ordi(roun, plateau,i,sac):
             val=valeur_mot(mei,dico)
             normal=mot_normal(mei)
             chercher2[normal]["val"]=val
-            print(chercher2)
         roun+=1
     else:
         pos=position_jouable(plateau,joueur[i]["Main"])
@@ -643,7 +652,6 @@ def tour_ordi(roun, plateau,i,sac):
             plateau=placer_mot(plateau,joueur[i]["Main"],mot,pos[mot]["i"],pos[mot]["j"],pos[mot]["dire"])
             joueur[i]["Main"]=completer_main(joueur[i]["Main"],sac)
             chercher2=mots_plateau(plateau,motsfr)
-            print(chercher2)
             if (chercher2==[]):
                 joueur[i]["Main"]=main2
                 return plateau2
@@ -661,7 +669,6 @@ def tour_ordi(roun, plateau,i,sac):
             plateau=placer_mot(plateau,joueur[i]["Main"],mot,pos[mot]["i"],pos[mot]["j"],pos[mot]["dire"])
             joueur[i]["Main"]=completer_main(joueur[i]["Main"],sac)
             chercher2=mots_plateau(plateau,motsfr)
-            print(chercher2)
             if (chercher2==[]):
                 joueur[i]["Main"]=main2
                 return plateau2
