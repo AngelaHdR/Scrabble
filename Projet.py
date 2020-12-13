@@ -147,7 +147,7 @@ def mot_jouable(mot,ll):
         if (lt in lettres_restantes):
             lettres_restantes.remove(lt)
         elif ("?" in lettres_restantes):
-            lettres_restantes.remove(lt)
+            lettres_restantes.remove("?")
         else:
             return False
     return True
