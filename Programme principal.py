@@ -16,42 +16,38 @@ mots_tableau={}
 
     #dictioner avec les prenoms des joueurs, ses mains et ses points
 joueur=joueurs(pioche)
-print(joueur)
 
     #liste avec les prenoms des joueurs en ordre
 nom=prochain_joueur(joueur)
-print(nom)
+print("\nOrdre des joueurs: ",nom)
 
     #affichage du plateau vide
 for ligne in plateau:
     print(*ligne, sep="|")
     
-#Jeu entre x personnes
-res=True
-while(res==True):
-    for i in range(len(nom)):
-        if(fin_partie(joueur[nom[i]]["Main"],pioche)):
-            x=tour_joueur(plateau,pioche,nom[i])
-            for ligne in x:
-                print(*ligne, sep="|")
-            print(joueur)
-        
-        else:
-            res=False
-
-#Jeu entre x ordinateurs
-roun=0
-res=True
-while(res==True):
-    for i in range(len(nom)):
-        if(fin_partie(joueur[nom[i]]["Main"],pioche)):
-            x=tour_ordi(roun,plateau,nom[i],pioche)
-            for ligne in x:
-                print(*ligne, sep="|")
-            print(joueur)
-        
-        else:
-            res=False
-        roun+=1
-
-
+#PROGRAMME PRINCIPAL
+jeu=input("\nVous voulez jouer manuellement (m) ou automatiquement (a): ")
+if(jeu=="m"):
+    res=True
+    while(res==True):
+        for i in range(len(nom)):
+            if(fin_partie(joueur[nom[i]]["Main"],pioche)):
+                x=tour_joueur(plateau,pioche,nom[i])
+                for ligne in x:
+                    print(*ligne, sep="|")
+            
+            else:
+                res=False
+elif(jeu=="a"):
+    roun=0
+    res=True
+    while(res==True):
+        for i in range(len(nom)):
+            if(fin_partie(joueur[nom[i]]["Main"],pioche)):
+                x=tour_ordi(roun,plateau,nom[i],pioche)
+                for ligne in x:
+                    print(*ligne, sep="|")
+            
+            else:
+                res=False
+            roun+=1
