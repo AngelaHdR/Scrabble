@@ -297,7 +297,7 @@ def tester_placement(plateau,i,j,dire,mot):
         if(dire=="h"):
             if(len(mot)<=(15-j)):
                 for lt in mot:
-                    if(plateau[i][j]==lt or plateau[i][j]==lt+"*" or plateau[i][j]==lt+"+" or plateau[i][j]==lt+"#" or plateau[i][j]==lt+"^"):
+                    if(plateau[i][j]==lt+" " or plateau[i][j]==lt+"*" or plateau[i][j]==lt+"+" or plateau[i][j]==lt+"#" or plateau[i][j]==lt+"^"):
                         j+=1
                     elif(lt=="*" or lt=="#" or lt=="+" or lt=="^"):
                         j=j
@@ -314,7 +314,7 @@ def tester_placement(plateau,i,j,dire,mot):
         elif(dire=="v"):
             if(len(mot)<=(15-i)):
                 for lt in mot:
-                    if(plateau[i][j]==lt or plateau[i][j]==lt+"*" or plateau[i][j]==lt+"+" or plateau[i][j]==lt+"#" or plateau[i][j]==lt+"^"):
+                    if(plateau[i][j]==lt+" " or plateau[i][j]==lt+"*" or plateau[i][j]==lt+"+" or plateau[i][j]==lt+"#" or plateau[i][j]==lt+"^"):
                         i+=1
                     elif(lt=="*" or lt=="#" or lt=="+" or lt=="^"):
                         i=i
@@ -539,6 +539,7 @@ def tour_joueur(plateau,sac,i):
     print("\nC'est le tour de :",i)
     print("Ta main est :",joueur[i]["Main"])
     x=int(input("\nQue veux-tu faire ?\n1-Placer   2-Echanger   3-Passer   4-Aide de vocabulaire->"))
+    chercher1=mots_plateau(plateau,motsfr)
             #Placer un mot
     if (x==1):
         mot=input("\nQuelle mot souhaitez-vous placer ? --->")
@@ -561,12 +562,14 @@ def tour_joueur(plateau,sac,i):
         chercher2=mots_plateau(plateau,motsfr)
         chercher2[mot]["val"]=val
 
+
             #Echanger des lettres    
     elif (x==2):
         jetons1=jetons_change(joueur[i]["Main"])
         J1=echanger(jetons1,joueur[i]["Main"],sac)
         joueur[i]["Main"]=J1
         print("\nTa nouvelle main est:",J1)
+        chercher2={}
             
             #Aide pour creer des mots avec une main
     elif (x==4):
@@ -591,6 +594,7 @@ def tour_joueur(plateau,sac,i):
         joueur[i]["Main"]=j1
         chercher2=mots_plateau(plateau,motsfr)
         chercher2[mot]["val"]=val
+        
     mt=mots_nouveaux(chercher1,chercher2)
     print("\nMots nouveaux placés:",mt)
     val=valeur_tableau(mt)
@@ -627,7 +631,7 @@ def prochain_joueur(joueur):
     return nom
 
 #BONUS INTELLIGENCE ARTIFICIELLE
-#Determiner le joueur qui doit jouer tout en conservant ses données (points, main et plateau) faire les actions de maniere automatique
+    #Determiner le joueur qui doit jouer tout en conservant ses données (points, main et plateau) faire les actions de maniere automatique
 def tour_ordi(roun, plateau,i,sac):
     print("\nC'est le tour de :",i)
     print("Ta main est :",joueur[i]["Main"])
@@ -635,11 +639,11 @@ def tour_ordi(roun, plateau,i,sac):
     main2=joueur[i]["Main"]
     chercher1=mots_plateau(plateau,motsfr)
     if(roun==0):
-        mei=meilleurs_mots(motsfr,joueur[i]["Main"],dico,7,7,"h")
+        mei=meilleurs_mots(motsfr,joueur[i]["Main"],dico,7,5,"h")
         print("\n",mei)
         if(len(mei)>1):
             mot=int(input("Choisir l'index d'un mot pour placer: "))
-            plateau=placer_mot(plateau,joueur[i]["Main"],mei[mot],7,7,"h")
+            plateau=placer_mot(plateau,joueur[i]["Main"],mei[mot],7,5,"h")
             joueur[i]["Main"]=completer_main(joueur[i]["Main"],sac)
             chercher2=mots_plateau(plateau,motsfr)
             val=valeur_mot(mei[mot],dico)
@@ -653,7 +657,7 @@ def tour_ordi(roun, plateau,i,sac):
             chercher2={}
         else:
             mei=mei[0]
-            plateau=placer_mot(plateau,joueur[i]["Main"],mei,7,7,"h")
+            plateau=placer_mot(plateau,joueur[i]["Main"],mei,7,5,"h")
             joueur[i]["Main"]=completer_main(joueur[i]["Main"],sac)
             chercher2=mots_plateau(plateau,motsfr)
             val=valeur_mot(mei,dico)
@@ -685,12 +689,13 @@ def tour_ordi(roun, plateau,i,sac):
             plateau=placer_mot(plateau,joueur[i]["Main"],mot,pos[mot]["i"],pos[mot]["j"],pos[mot]["dire"])
             joueur[i]["Main"]=completer_main(joueur[i]["Main"],sac)
             chercher2=mots_plateau(plateau,motsfr)
-            if (chercher2==[]):
+            if (chercher2=={}):
                 joueur[i]["Main"]=main2
                 return plateau2
             else:
                 val=pos[mot]["val"]
                 chercher2[mot]["val"]=val
+    
     mt=mots_nouveaux(chercher1,chercher2)
     print("\nMots nouveaux placés:",mt)
     val=valeur_tableau(mt)
@@ -698,3 +703,54 @@ def tour_ordi(roun, plateau,i,sac):
     joueur[i]["Points"]=val+x
     print(i,"a un total de",joueur[i]["Points"],"points\n")
     return plateau
+
+
+#PROGRAMME PRINCIPAL
+    #plateau de jeu avec les bonus
+plateau=init_bonus()
+
+    #dictoner avec les valeurs
+dico=init_dico()
+
+    #sac avec les jetons
+pioche=init_pioche(dico)
+
+    #liste de mots existants
+motsfr=generer_dico("FICHIERLETTRE.txt")
+
+    #dictioner avec les mots placés au tableau et ses valeurs
+mots_tableau={}
+
+    #dictioner avec les prenoms des joueurs, ses mains et ses points
+joueur=joueurs(pioche)
+
+    #liste avec les prenoms des joueurs en ordre
+nom=prochain_joueur(joueur)
+print("\nOrdre des joueurs: ",nom)
+
+
+jeu=input("\nVous voulez jouer manuellement (m) ou automatiquement (a): ")
+if(jeu=="m"):
+    res=True
+    while(res==True):
+        for i in range(len(nom)):
+            if(fin_partie(joueur[nom[i]]["Main"],pioche)):
+                x=tour_joueur(plateau,pioche,nom[i])
+                for ligne in x:
+                    print(*ligne, sep="|")
+            
+            else:
+                res=False
+elif(jeu=="a"):
+    roun=0
+    res=True
+    while(res==True):
+        for i in range(len(nom)):
+            if(fin_partie(joueur[nom[i]]["Main"],pioche)):
+                x=tour_ordi(roun,plateau,nom[i],pioche)
+                for ligne in x:
+                    print(*ligne, sep="|")
+            
+            else:
+                res=False
+            roun+=1
