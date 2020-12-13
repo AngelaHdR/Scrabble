@@ -523,6 +523,8 @@ def registre(mots_tableau,mot,val):
 def joueurs(sac):
     joueur={}
     nbj=int(input("Combien de joueurs êtes-vous ?"))
+    while(nbj>4 or nbj<2):
+        nbj=int(input("Combien de joueur êtes vous ?"))
     for i in range (nbj) :
         prenom=input("Quel est ton prénom ?")
         joueur[prenom]= {"Main":0,"Points":0}
